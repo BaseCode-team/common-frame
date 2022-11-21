@@ -1,0 +1,8 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  team.study.common.service.util.SpringContextUtil,\
+  team.study.common.service.util.EnvironmentUtil,\
+  team.study.common.service.config.mybatisplus.MybatisConfiguration,\
+  team.study.common.service.config.minio.MinioAutoConfiguration,\
+  team.study.common.service.event.DomainEventPublisherImpl,\
+  team.study.common.service.config.nginx.NginxConfig
+
