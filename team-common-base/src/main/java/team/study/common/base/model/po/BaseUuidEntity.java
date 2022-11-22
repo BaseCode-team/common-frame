@@ -25,12 +25,12 @@ public class BaseUuidEntity {
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    private LocalDateTime gmtModified;
+    private LocalDateTime updateTime;
 
     /**
      * 是否删除，0位未删除

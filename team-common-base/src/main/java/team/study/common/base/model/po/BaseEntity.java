@@ -24,11 +24,11 @@ public class BaseEntity {
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    private LocalDateTime gmtModified;
+    private LocalDateTime updateTime;
 
 }
