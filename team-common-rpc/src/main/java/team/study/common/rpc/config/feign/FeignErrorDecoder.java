@@ -1,14 +1,13 @@
 package team.study.common.rpc.config.feign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import team.study.common.base.exception.ServiceException;
-import team.study.common.base.exception.SystemException;
-import team.study.common.base.result.Result;
+import team.study.common.base.exception.BizException;
+import team.study.common.base.exception.SysException;
+import team.study.common.base.response.Response;
 import team.study.common.rpc.config.ExceptionWrapper;
 
 import java.io.IOException;
@@ -31,32 +30,29 @@ public class FeignErrorDecoder implements ErrorDecoder {
     private final ExceptionWrapper exceptionWrapper;
 
     @Override
-    public Exception decode(String methodKey, Response response) {
+    public Exception decode(String methodKey, feign.Response response) {
 
         if (HttpStatus.INTERNAL_SERVER_ERROR.value() != response.status()) {
             String message = MessageFormat.format("响应异常, code:{0}, reason:{1}", response.status(), response.reason());
-            throw new SystemException(message);
+            throw new SysException(message);
         }
 
-        Result result = decodeResponseAsResult(methodKey, response);
+        Response result = decodeResponseAsResult(methodKey, response);
 
         // 如果Result为空，那么返回系统异常
         if (Objects.isNull(result)) {
             log.debug("响应异常, response=====> status:{}, reason:{}, 可能由于未经过GlobalExceptionHandler处理", response.status(), response.reason());
-            return wrap(new SystemException(response.reason()));
-        }
-        if (result.systemFail()) {
-            return wrap(new SystemException(result.getMessage()));
+            return wrap(new SysException(response.reason()));
         }
         // 否则就返回服务业务异常
-        return wrap(new ServiceException(result.getErrorCode(), result.getMessage()));
+        return wrap(new BizException(result.getErrCode(), result.getErrMessage()));
     }
 
-    private Result decodeResponseAsResult(String methodKey, Response response) {
-        Result result = null;
+    private Response decodeResponseAsResult(String methodKey, feign.Response response) {
+        Response result = null;
         try {
             // 如果时500的响应吗，尝试解析响应内容为Result
-            result = objectMapper.readValue(response.body().asInputStream(), Result.class);
+            result = objectMapper.readValue(response.body().asInputStream(), Response.class);
         } catch (IOException e) {
             log.error("解析feign错误响应失败methodKey:{},response:{}", methodKey, response);
             log.error("异常信息", e);

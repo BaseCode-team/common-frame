@@ -2,4 +2,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   team.study.common.interaction.config.SwaggerConfig,\
   team.study.common.interaction.config.AddTraceIdResponseBodyAdvice,\
   team.study.common.interaction.config.CommonJacksonConfig,\
-  team.study.common.interaction.config.message.TeamMessageSourceImpl
+  team.study.common.base.message.TeamMessageSourceImpl

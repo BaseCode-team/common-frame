@@ -15,6 +15,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class KeywordQuery extends PageQuery {
 
-    @ApiModelProperty("关键字查询")
+    @ApiModelProperty(value = "关键字查询", name = "keyword")
     private String keyword;
 }

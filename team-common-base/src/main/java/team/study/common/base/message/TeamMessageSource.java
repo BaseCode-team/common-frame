@@ -1,4 +1,4 @@
-package team.study.common.interaction.config.message;
+package team.study.common.base.message;
 
 /**
  * 国际化数据处理

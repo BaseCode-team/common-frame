@@ -10,7 +10,7 @@ import lombok.Getter;
  * @date 2022/11/20 17:15
  **/
 @EqualsAndHashCode(callSuper = true)
-public class ValidationException extends ServiceException {
+public class ValidationException extends BizException {
 
     @Getter
     private Object[] params;

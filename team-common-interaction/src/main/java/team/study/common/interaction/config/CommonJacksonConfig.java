@@ -23,12 +23,12 @@ import java.time.format.DateTimeFormatter;
  * @date 2022/11/20 18:34
  **/
 @Configuration
-@ConditionalOnProperty(value = "baiyan.config.jackson.enable", havingValue = "true")
+@ConditionalOnProperty(value = "team.study.config.jackson.enable", havingValue = "true")
 public class CommonJacksonConfig {
 
-    public static final String timeFormat = "HH:mm:ss";
-    public static final String dateFormat = "yyyy-MM-dd";
-    public static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    public static final String TIME_FORMAT = "HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * 全局时间格式化
@@ -36,15 +36,15 @@ public class CommonJacksonConfig {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer() {
         return builder -> {
-            builder.simpleDateFormat(dateTimeFormat);
+            builder.simpleDateFormat(DATE_TIME_FORMAT);
             //日期序列化
-            builder.serializers(new LocalTimeSerializer(DateTimeFormatter.ofPattern(timeFormat)));
-            builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)));
-            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+            builder.serializers(new LocalTimeSerializer(DateTimeFormatter.ofPattern(TIME_FORMAT)));
+            builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_FORMAT)));
+            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));
             //日期反序列化
-            builder.deserializers(new LocalTimeDeserializer(DateTimeFormatter.ofPattern(timeFormat)));
-            builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(dateFormat)));
-            builder.deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+            builder.deserializers(new LocalTimeDeserializer(DateTimeFormatter.ofPattern(TIME_FORMAT)));
+            builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE_FORMAT)));
+            builder.deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));
         };
     }
 }

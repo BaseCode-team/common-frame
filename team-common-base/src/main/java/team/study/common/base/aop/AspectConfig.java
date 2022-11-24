@@ -1,10 +1,13 @@
 package team.study.common.base.aop;
 
+import cn.hutool.core.date.StopWatch;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -17,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author JiaHao
  * @version 1.0
  * @date 2022-11-17 12:15
- * @description AOP切面工具
  */
 @Aspect
 @Component
@@ -35,29 +37,21 @@ public class AspectConfig {
     public void repositoryPointCut() {
     }
 
-    @Before(value = "repositoryPointCut() && @annotation(repositoryLog)")
-    public void doRepositoryBefore(JoinPoint joinPoint, RepositoryLog repositoryLog) throws Exception {
+    @Around(value = "repositoryPointCut() && @annotation(repositoryLog)")
+    public Object doRepositoryAround(ProceedingJoinPoint joinPoint, RepositoryLog repositoryLog) throws Throwable {
         // 获取 @WebLog 注解的描述信息
         String methodDescription = repositoryLog.description();
         // 打印请求相关参数
-        log.info("========================================== Start ==========================================");
+        log.info("========================================== RepositoryLog Start ==========================================");
         // 打印描述信息
-        log.info("Description    : {}", methodDescription);
+        log.info(String.format("%-15s\t : %-15s\t", "描述信息", methodDescription));
         // 打印调用 controller 的全路径以及执行方法
-        log.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info(String.format("%-15s\t : %-15s\t", "请求方法名", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName()));
         // 打印请求入参
-        log.info("Request Args   : {}", JSONObject.toJSON(joinPoint.getArgs()));
+        log.info(String.format("%-15s\t : \n%s", "请求参数", JSONObject.toJSONString(joinPoint.getArgs(), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat)));
+        return calculateTime(joinPoint, "RepositoryLog");
     }
 
-    @Around("repositoryPointCut()")
-    public Object doRepositoryAround(ProceedingJoinPoint jointPoint) throws Throwable {
-        return doAround(jointPoint);
-    }
-
-    @After(value = "repositoryPointCut()")
-    public void doRepositoryAfter(JoinPoint joinPoint) {
-        doAfter(joinPoint);
-    }
     // endregion
 
     // region WebLog
@@ -75,13 +69,8 @@ public class AspectConfig {
     public void webPointCut() {
     }
 
-    /**
-     * 切点方法执行前运行
-     *
-     * @date 2022/11/17 12:17
-     **/
-    @Before(value = "webPointCut() && @annotation(webLog)")
-    public void doWebBefore(JoinPoint joinPoint, WebLog webLog) throws Exception {
+    @Around("webPointCut() && @annotation(webLog)")
+    public Object doWebAround(ProceedingJoinPoint joinPoint, WebLog webLog) throws Throwable {
         // 开始打印请求日志
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         assert attributes != null;
@@ -89,48 +78,37 @@ public class AspectConfig {
         // 获取 @WebLog 注解的描述信息
         String methodDescription = webLog.description();
         // 打印请求相关参数
-        log.info("========================================== Start ==========================================");
+        log.info("========================================== WebLog Start ==========================================");
         // 打印请求 url
-        log.info("URL            : {}", request.getRequestURL().toString());
+        log.info(String.format("%-15s\t : %-15s\t", "URL路径", request.getRequestURL().toString()));
         // 打印描述信息
-        log.info("Description    : {}", methodDescription);
+        log.info(String.format("%-15s\t : %-15s\t", "描述信息", methodDescription));
         // 打印 Http method
-        log.info("HTTP Method    : {}", request.getMethod());
+        log.info(String.format("%-15s\t : %-15s\t", "请求方式", request.getMethod()));
         // 打印调用 controller 的全路径以及执行方法
-        log.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info(String.format("%-15s\t : %-15s\t", "请求方法名", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName()));
         // 打印请求的 IP
-        log.info("IP             : {}", request.getRemoteAddr());
+        String localhost = "0:0:0:0:0:0:0:1";
+        String local = "本机";
+        log.info(String.format("%-15s\t : %-15s\t", "IP地址", localhost.equals(request.getRemoteAddr()) ? local : request.getRemoteAddr()));
         // 打印请求入参
-        log.info("Request Args   : {}", JSONObject.toJSON(joinPoint.getArgs()));
+        log.info(String.format("%-15s\t : \n%s", "请求参数", JSONObject.toJSONString(joinPoint.getArgs(), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat)));
+        return calculateTime(joinPoint, "WebLog");
     }
 
-    @Around("webPointCut()")
-    public Object doWebAround(ProceedingJoinPoint jointPoint) throws Throwable {
-        return doAround(jointPoint);
-    }
-
-    /**
-     * 切点方法执行后运行，不管切点方法执行成功还是出现异常
-     */
-    @After(value = "webPointCut()")
-    public void doWebAfter(JoinPoint joinPoint) {
-        doAfter(joinPoint);
-    }
     //endregion
 
-    public void doAfter(JoinPoint joinPoint) {
-        // 接口结束后换行，方便分割查看
-        log.info("=========================================== End ===========================================" + LINE_SEPARATOR);
-    }
-
-    public Object doAround(ProceedingJoinPoint jointPoint) throws Throwable {
-        long startTime = System.currentTimeMillis();
-        Object result = jointPoint.proceed();
+    public Object calculateTime(ProceedingJoinPoint joinPoint, String logType) throws Throwable {
+        StopWatch sw = new StopWatch();
+        sw.start();
+        Object result = joinPoint.proceed();
         // 打印出参
-        log.info("Response Args  : {}", JSONObject.toJSON(result));
+        log.info(String.format("%-15s\t : \n%s", "执行结果为", JSONObject.toJSONString(result, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat)));
+        sw.stop();
         // 执行耗时
-        log.info("Time-Consuming : {} ms", System.currentTimeMillis() - startTime);
+        log.info("总共耗时 : {} ms", sw.getLastTaskTimeMillis());
+        // 接口结束后换行，方便分割查看
+        log.info("=========================================== " + logType + " End ===========================================" + LINE_SEPARATOR);
         return result;
     }
-
 }
