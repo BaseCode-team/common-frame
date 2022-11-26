@@ -12,6 +12,7 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class ValidationException extends BizException {
 
+    private final static String DEFAULT_ERR_CODE = "VALID_ERROR";
     @Getter
     private Object[] params;
 
@@ -20,7 +21,7 @@ public class ValidationException extends BizException {
     }
 
     public ValidationException(String message, Object[] params) {
-        super(message);
+        super(DEFAULT_ERR_CODE, message);
         this.params = params;
     }
 
@@ -29,8 +30,12 @@ public class ValidationException extends BizException {
         this.params = params;
     }
 
-    public static ValidationException of(String code, Object[] params) {
-        return new ValidationException(code, null, params);
+    public static ValidationException of(String code, String message, Object[] params) {
+        return new ValidationException(code, message, params);
+    }
+
+    public static ValidationException of(String message, Object[] params) {
+        return new ValidationException(DEFAULT_ERR_CODE, message, params);
     }
 
 }

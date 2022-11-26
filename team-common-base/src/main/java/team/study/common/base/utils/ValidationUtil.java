@@ -17,50 +17,50 @@ public class ValidationUtil {
         throw new ValidationException(code, params);
     }
 
-    public static void isTrue(boolean expect, String code, Object... params) {
+    public static void isTrue(boolean expect, String message, Object... params) {
         if (!expect) {
-            throw ValidationException.of(code, params);
+            throw ValidationException.of(message, params);
         }
     }
 
-    public static void isFalse(boolean expect, String code, Object... params) {
-        isTrue(!expect, code, params);
+    public static void isFalse(boolean expect, String message, Object... params) {
+        isTrue(!expect, message, params);
     }
 
-    public static void equals(String first, String second, String code, Object... params) {
-        isTrue(first.equals(second), code, params);
+    public static void equals(String first, String second, String message, Object... params) {
+        isTrue(first.equals(second), message, params);
     }
 
-    public static void nil(Object object, String code, Object... params) {
-        isTrue(Objects.isNull(object), code, params);
+    public static void nil(Object object, String message, Object... params) {
+        isTrue(Objects.isNull(object), message, params);
     }
 
-    public static void notNull(Object object, String code, Object... params) {
-        isTrue(Objects.nonNull(object), code, params);
+    public static void notNull(Object object, String message, Object... params) {
+        isTrue(Objects.nonNull(object), message, params);
     }
 
-    public static void equals(Object first, Object second, String code, Object... params) {
-        isTrue(Objects.equals(first, second), code, params);
+    public static void equals(Object first, Object second, String message, Object... params) {
+        isTrue(Objects.equals(first, second), message, params);
     }
 
-    public static void notEquals(Object first, Object second, String code, Object... params) {
-        isTrue(!Objects.equals(first, second), code, params);
+    public static void notEquals(Object first, Object second, String message, Object... params) {
+        isTrue(!Objects.equals(first, second), message, params);
     }
 
-    public static void empty(Collection collection, String code, Object... params) {
-        isTrue(CollectionUtils.isEmpty(collection), code, params);
+    public static void empty(Collection collection, String message, Object... params) {
+        isTrue(CollectionUtils.isEmpty(collection), message, params);
     }
 
-    public static void notEmpty(Collection collection, String code, Object... params) {
-        isTrue(CollectionUtils.isNotEmpty(collection), code, params);
+    public static void notEmpty(Collection collection, String message, Object... params) {
+        isTrue(CollectionUtils.isNotEmpty(collection), message, params);
     }
 
-    public static void blank(String str, String code, Object... params) {
-        isTrue(StringUtil.isBlank(str), code, params);
+    public static void blank(String str, String message, Object... params) {
+        isTrue(StringUtil.isBlank(str), message, params);
     }
 
-    public static void notBlank(String str, String code, Object... params) {
-        isTrue(StringUtil.isNotBlank(str), code, params);
+    public static void notBlank(String str, String message, Object... params) {
+        isTrue(StringUtil.isNotBlank(str), message, params);
     }
 
 }
