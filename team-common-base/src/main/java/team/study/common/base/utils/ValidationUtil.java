@@ -1,6 +1,6 @@
 package team.study.common.base.utils;
 
-import team.study.common.base.exception.ValidationException;
+import team.study.common.base.exception.ExceptionFactory;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -13,13 +13,10 @@ import java.util.Objects;
  **/
 public class ValidationUtil {
 
-    public static void sneakyThrow(String code, Object... params) {
-        throw new ValidationException(code, params);
-    }
 
     public static void isTrue(boolean expect, String message, Object... params) {
         if (!expect) {
-            throw ValidationException.of(message, params);
+            throw ExceptionFactory.validationException(message, params);
         }
     }
 

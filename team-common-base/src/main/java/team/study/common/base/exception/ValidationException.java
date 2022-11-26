@@ -2,6 +2,7 @@ package team.study.common.base.exception;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import team.study.common.base.enums.ErrorCodeEnum;
 
 /**
  * 校验异常
@@ -12,7 +13,6 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class ValidationException extends BizException {
 
-    private final static String DEFAULT_ERR_CODE = "VALID_ERROR";
     @Getter
     private Object[] params;
 
@@ -21,7 +21,7 @@ public class ValidationException extends BizException {
     }
 
     public ValidationException(String message, Object[] params) {
-        super(DEFAULT_ERR_CODE, message);
+        super(ErrorCodeEnum.VALID_ERROR.getCode(), message);
         this.params = params;
     }
 
@@ -35,7 +35,7 @@ public class ValidationException extends BizException {
     }
 
     public static ValidationException of(String message, Object[] params) {
-        return new ValidationException(DEFAULT_ERR_CODE, message, params);
+        return new ValidationException(ErrorCodeEnum.VALID_ERROR.getCode(), message, params);
     }
 
 }

@@ -3,7 +3,7 @@ package team.study.common.base.utils.threadpool;
 import com.alibaba.ttl.TtlRunnable;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import team.study.common.base.exception.ThreadPoolExecutorException;
+import team.study.common.base.exception.ExceptionFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,7 +200,7 @@ public class ThreadPoolServiceImpl implements ThreadPoolService {
                 }
             }
             if (t != null) {
-                throw new ThreadPoolExecutorException(t);
+                throw ExceptionFactory.threadPoolExecutorException(t);
             }
         }
     }

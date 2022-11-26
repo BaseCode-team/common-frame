@@ -1,6 +1,7 @@
 package team.study.common.base.exception;
 
 import lombok.EqualsAndHashCode;
+import team.study.common.base.enums.ErrorCodeEnum;
 
 import java.io.Serial;
 
@@ -16,10 +17,9 @@ public class AuthException extends BaseException {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    private static final String DEFAULT_ERR_CODE = "AUTH_ERROR";
 
     public AuthException(String errMessage) {
-        super(DEFAULT_ERR_CODE, errMessage);
+        super(ErrorCodeEnum.AUTH_ERROR.getCode(), errMessage);
     }
 
     public AuthException(String errCode, String errMessage) {
@@ -27,7 +27,7 @@ public class AuthException extends BaseException {
     }
 
     public AuthException(String errMessage, Throwable e) {
-        super(DEFAULT_ERR_CODE, errMessage, e);
+        super(ErrorCodeEnum.AUTH_ERROR.getCode(), errMessage, e);
     }
 
     public AuthException(String errorCode, String errMessage, Throwable e) {

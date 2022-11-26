@@ -33,4 +33,20 @@ public class ExceptionFactory {
     public static SysException sysException(String errorCode, String errorMessage, Throwable e) {
         return new SysException(errorCode, errorMessage, e);
     }
+
+    public static ThreadPoolExecutorException threadPoolExecutorException(Throwable e) {
+        return new ThreadPoolExecutorException(e);
+    }
+
+    public static ValidationException validationException(String message) {
+        return new ValidationException(message);
+    }
+
+    public static ValidationException validationException(String message, Object[] params) {
+        return new ValidationException(message, params);
+    }
+
+    public static ValidationException validationException(String code, String message, Object[] params) {
+        return new ValidationException(code, message, params);
+    }
 }

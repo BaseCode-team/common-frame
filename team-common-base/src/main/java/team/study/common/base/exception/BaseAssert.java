@@ -9,31 +9,31 @@ import java.util.Map;
  * @author JiaHao
  * @date 2022-11-22 15:51
  */
-public abstract class Assert {
-    public Assert() {
+public abstract class BaseAssert {
+    public BaseAssert() {
     }
 
     public static void isTrue(boolean expression, String errorCode, String errMessage) {
         if (!expression) {
-            throw new BizException(errorCode, errMessage);
+            throw ExceptionFactory.bizException(errorCode, errMessage);
         }
     }
 
     public static void isFalse(boolean expression, String errorCode, String errMessage) {
         if (expression) {
-            throw new BizException(errorCode, errMessage);
+            throw ExceptionFactory.bizException(errorCode, errMessage);
         }
     }
 
     public static void isTrue(boolean expression, String errMessage) {
         if (!expression) {
-            throw new BizException(errMessage);
+            throw ExceptionFactory.bizException(errMessage);
         }
     }
 
     public static void isFalse(boolean expression, String errMessage) {
         if (expression) {
-            throw new BizException(errMessage);
+            throw ExceptionFactory.bizException(errMessage);
         }
     }
 
@@ -47,13 +47,13 @@ public abstract class Assert {
 
     public static void notNull(Object object, String errorCode, String errMessage) {
         if (object == null) {
-            throw new BizException(errorCode, errMessage);
+            throw ExceptionFactory.bizException(errorCode, errMessage);
         }
     }
 
     public static void notNull(Object object, String errMessage) {
         if (object == null) {
-            throw new BizException(errMessage);
+            throw ExceptionFactory.bizException(errMessage);
         }
     }
 
@@ -63,13 +63,13 @@ public abstract class Assert {
 
     public static void notEmpty(Collection<?> collection, String errorCode, String errMessage) {
         if (collection == null || collection.isEmpty()) {
-            throw new BizException(errorCode, errMessage);
+            throw ExceptionFactory.bizException(errorCode, errMessage);
         }
     }
 
     public static void notEmpty(Collection<?> collection, String errMessage) {
         if (collection == null || collection.isEmpty()) {
-            throw new BizException(errMessage);
+            throw ExceptionFactory.bizException(errMessage);
         }
     }
 
@@ -79,13 +79,13 @@ public abstract class Assert {
 
     public static void notEmpty(Map<?, ?> map, String errorCode, String errMessage) {
         if (map == null || map.isEmpty()) {
-            throw new BizException(errorCode, errMessage);
+            throw ExceptionFactory.bizException(errorCode, errMessage);
         }
     }
 
     public static void notEmpty(Map<?, ?> map, String errMessage) {
         if (map == null || map.isEmpty()) {
-            throw new BizException(errMessage);
+            throw ExceptionFactory.bizException(errMessage);
         }
     }
 

@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import team.study.common.base.exception.BizException;
-import team.study.common.base.exception.SysException;
+import team.study.common.base.exception.ExceptionFactory;
 import team.study.common.base.response.Response;
 import team.study.common.rpc.config.ExceptionWrapper;
 
@@ -34,7 +34,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
 
         if (HttpStatus.INTERNAL_SERVER_ERROR.value() != response.status()) {
             String message = MessageFormat.format("响应异常, code:{0}, reason:{1}", response.status(), response.reason());
-            throw new SysException(message);
+            throw ExceptionFactory.sysException(message);
         }
 
         Response result = decodeResponseAsResult(methodKey, response);
@@ -42,7 +42,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
         // 如果Result为空，那么返回系统异常
         if (Objects.isNull(result)) {
             log.debug("响应异常, response=====> status:{}, reason:{}, 可能由于未经过GlobalExceptionHandler处理", response.status(), response.reason());
-            return wrap(new SysException(response.reason()));
+            return wrap(ExceptionFactory.sysException(response.reason()));
         }
         // 否则就返回服务业务异常
         return wrap(new BizException(result.getErrCode(), result.getErrMessage()));

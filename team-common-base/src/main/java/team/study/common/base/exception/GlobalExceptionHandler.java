@@ -7,6 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import team.study.common.base.enums.ErrorCodeEnum;
 import team.study.common.base.response.Response;
 import team.study.common.base.utils.StringUtil;
 
@@ -49,13 +50,10 @@ public class GlobalExceptionHandler {
         StringBuilder errorMessage = new StringBuilder();
         BindingResult result = ex.getBindingResult();
         if (result.hasErrors()) {
+            errorCode.append(ErrorCodeEnum.VALID_ERROR.getCode());
             List<ObjectError> errors = result.getAllErrors();
             errors.forEach(p -> {
                 FieldError fieldError = (FieldError) p;
-                if (errorCode.length() > 0) {
-                    errorCode.append(",");
-                }
-                errorCode.append(fieldError.getCode());
                 if (errorMessage.length() > 0) {
                     errorMessage.append(",");
                 }
@@ -73,12 +71,9 @@ public class GlobalExceptionHandler {
         BindingResult result = ex.getBindingResult();
         if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
+            errorCode.append(ErrorCodeEnum.VALID_ERROR.getCode());
             errors.forEach(p -> {
                 FieldError fieldError = (FieldError) p;
-                if (errorCode.length() > 0) {
-                    errorCode.append(",");
-                }
-                errorCode.append(fieldError.getCode());
                 if (errorMessage.length() > 0) {
                     errorMessage.append(",");
                 }

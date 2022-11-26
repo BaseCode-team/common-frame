@@ -1,6 +1,7 @@
 package team.study.common.base.exception;
 
 import lombok.EqualsAndHashCode;
+import team.study.common.base.enums.ErrorCodeEnum;
 
 import java.io.Serial;
 
@@ -15,7 +16,6 @@ import java.io.Serial;
 public class ThreadPoolExecutorException extends BaseException {
     @Serial
     private static final long serialVersionUID = 1L;
-    private static final String DEFAULT_ERR_CODE = "THREAD_POOL_ERROR";
 
     /**
      * 用表示异常原因的对象构造新实例。
@@ -23,7 +23,7 @@ public class ThreadPoolExecutorException extends BaseException {
      * @param cause 异常原因。
      */
     public ThreadPoolExecutorException(Throwable cause) {
-        super(DEFAULT_ERR_CODE, cause);
+        super(ErrorCodeEnum.THREAD_POOL_ERROR.getCode(), cause);
     }
 
 }
