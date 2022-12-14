@@ -5,7 +5,6 @@ import feign.codec.ErrorDecoder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import team.study.common.base.exception.BizException;
 import team.study.common.base.exception.ExceptionFactory;
 import team.study.common.base.response.Response;
 import team.study.common.rpc.config.ExceptionWrapper;
@@ -45,7 +44,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
             return wrap(ExceptionFactory.sysException(response.reason()));
         }
         // 否则就返回服务业务异常
-        return wrap(new BizException(result.getErrCode(), result.getErrMessage()));
+        return wrap(ExceptionFactory.bizException(result.getCode(), result.getErrMessage()));
     }
 
     private Response decodeResponseAsResult(String methodKey, feign.Response response) {

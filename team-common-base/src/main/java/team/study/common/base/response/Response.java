@@ -3,10 +3,12 @@ package team.study.common.base.response;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import team.study.common.base.exception.BaseException;
 import team.study.common.base.model.dto.DTO;
 
 import java.io.Serial;
+import java.util.Map;
 
 /**
  * 返回实体
@@ -16,15 +18,35 @@ import java.io.Serial;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Accessors(chain = true)
 public class Response extends DTO {
     @Serial
     private static final long serialVersionUID = 1L;
     @ApiModelProperty(value = "是否成功", name = "success", dataType = "boolean")
     private boolean success;
-    @ApiModelProperty(value = "错误编码", name = "errCode", dataType = "String")
-    private String errCode;
+
+    /**
+     * 结果消息，如果调用成功，消息通常为空T
+     */
+    @ApiModelProperty(value = "提示消息")
+    private String msg = "ok";
+    @ApiModelProperty(value = "响应编码", name = "code", dataType = "String")
+    private String code;
     @ApiModelProperty(value = "错误信息", name = "errMessage", dataType = "String")
     private String errMessage;
+    @ApiModelProperty(value = "请求路径")
+    private String path;
+    /**
+     * 附加数据
+     */
+    @ApiModelProperty(value = "附加数据")
+    private Map<Object, Object> extra;
+
+    /**
+     * 响应时间
+     */
+    @ApiModelProperty(value = "响应时间戳")
+    private long timestamp = System.currentTimeMillis();
 
     /**
      * 链路id
@@ -37,11 +59,6 @@ public class Response extends DTO {
     }
 
 
-    @Override
-    public String toString() {
-        return "Response [success=" + this.success + ", errCode=" + this.errCode + ", errMessage=" + this.errMessage + "]";
-    }
-
     public static Response buildSuccess() {
         Response response = new Response();
         response.setSuccess(true);
@@ -49,20 +66,39 @@ public class Response extends DTO {
     }
 
 
-    public static Response buildFailure(String errCode, String errMessage) {
+    public static Response buildFailure(String code, String errMessage) {
         Response response = new Response();
         response.setSuccess(false);
-        response.setErrCode(errCode);
+        response.setCode(code);
+        response.setErrMessage(errMessage);
+        return response;
+    }
+
+    public static Response buildFailure(String code, String msg, String errMessage) {
+        Response response = new Response();
+        response.setMsg(msg);
+        response.setSuccess(false);
+        response.setCode(code);
         response.setErrMessage(errMessage);
         return response;
     }
 
     public static Response buildFailure(BaseException ex) {
         Response response = new Response();
+        response.setMsg("");
         response.setSuccess(false);
-        response.setErrCode(ex.getErrCode());
+        response.setCode(ex.getErrCode());
         response.setErrMessage(ex.getMessage());
         return response;
+    }
+
+    /**
+     * 逻辑处理是否成功
+     *
+     * @return 是否成功
+     */
+    public Boolean getIsSuccess() {
+        return this.success;
     }
 
     /**

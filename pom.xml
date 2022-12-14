@@ -22,6 +22,7 @@
         <module>team-common-rpc</module>
         <module>team-common-service</module>
         <module>team-common-api</module>
+        <module>team-common-jwt-starter</module>
     </modules>
 
     <dependencies>

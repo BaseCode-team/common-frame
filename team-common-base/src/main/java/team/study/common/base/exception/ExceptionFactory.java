@@ -1,5 +1,7 @@
 package team.study.common.base.exception;
 
+import team.study.common.base.enums.ExceptionCode;
+
 /**
  * 异常工厂
  *
@@ -10,8 +12,28 @@ public class ExceptionFactory {
     public ExceptionFactory() {
     }
 
+    public static AuthException authException(String errorMessage) {
+        return new AuthException(errorMessage);
+    }
+
+    public static AuthException authException(ExceptionCode exceptionCode) {
+        return new AuthException(exceptionCode.getCode(), exceptionCode.getDesc());
+    }
+
+    public static AuthException authException(String errorCode, String errorMessage) {
+        return new AuthException(errorCode, errorMessage);
+    }
+
+    public static AuthException authException(String errorMessage, Throwable e) {
+        return new AuthException(errorMessage, e);
+    }
+
     public static BizException bizException(String errorMessage) {
         return new BizException(errorMessage);
+    }
+
+    public static BizException bizException(ExceptionCode exceptionCode) {
+        return new BizException(exceptionCode.getCode(), exceptionCode.getDesc());
     }
 
     public static BizException bizException(String errorCode, String errorMessage) {

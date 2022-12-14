@@ -1,10 +1,8 @@
 package team.study.common.base.model.po;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
-
-import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
 
 /**
  * po层实体
@@ -13,24 +11,9 @@ import java.time.LocalDateTime;
  * @author JiaHao
  * @date 2022/11/20 17:24
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class BaseUuidEntity {
-
-    /**
-     * 主键id 采用默认雪花算法
-     */
-    @TableId
-    private Long id;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    private LocalDateTime updateTime;
+public class BaseUuidEntity extends Entity {
 
     /**
      * 是否删除，0位未删除

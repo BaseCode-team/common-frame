@@ -96,7 +96,7 @@ public class PageResponse<T> extends Response {
     public static PageResponse buildFailure(String errCode, String errMessage) {
         PageResponse response = new PageResponse();
         response.setSuccess(false);
-        response.setErrCode(errCode);
+        response.setCode(errCode);
         response.setErrMessage(errMessage);
         return response;
     }

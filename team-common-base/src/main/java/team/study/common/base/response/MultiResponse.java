@@ -52,7 +52,7 @@ public class MultiResponse<T> extends Response {
     public static MultiResponse buildFailure(String errCode, String errMessage) {
         MultiResponse response = new MultiResponse();
         response.setSuccess(false);
-        response.setErrCode(errCode);
+        response.setCode(errCode);
         response.setErrMessage(errMessage);
         return response;
     }
